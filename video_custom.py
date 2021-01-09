@@ -45,7 +45,7 @@ while(True):
 
     cap.release()
     out.release()
-    cv2.destroyAllWindowqs()
+    cv2.destroyAllWindows()
 
 
 
