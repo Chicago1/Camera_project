@@ -8,22 +8,53 @@
 import numpy as np
 import cv2
 import time
+from datetime import datetime
 
-cap = cv2.VideoCapture(0)
-cap.set(3,640)
-cap.set(4,480)
 
-fourcc = cv2.VideoWriter_fourcc(*'MP4V')
-out = cv2.VideoWriter('/home/pi/Desktop/cctv/output.mp4', fourcc, 20.0, (640,480))
 
+
+
+#data log time (in seconds)
+record_sec = 5
+
+#loops to infinity
 while(True):
-    ret, frame = cap.read()
-    out.write(frame)
-    cv2.imshow('frame', frame)
-    c = cv2.waitKey(1)
-    if c & 0xFF == ord('q'):
-        break
+    # launch video capture software
+    cap = cv2.VideoCapture(0)
+    cap.set(3, 1920)
+    cap.set(4, 1080)
+    # sets the right codec
+    fourcc = cv2.VideoWriter_fourcc(*'MP4V')
 
-cap.release()
-out.release()
-cv2.destroyAllWindowqs()
+    start = time.time()
+    # datetime object containing current date and time
+    now = datetime.now()
+    # dd/mm/YY H:M:S
+    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    out = cv2.VideoWriter("/home/pi/mnt/gdrive"+dt_string+".mp4", fourcc, 20.0, (1920, 1080))
+
+
+
+    while time.time() - start < record_sec: #
+        ret, frame = cap.read()
+        out.write(frame)
+        cv2.imshow('frame', frame)
+        c = cv2.waitKey(1)
+        if c & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    out.release()
+    cv2.destroyAllWindowqs()
+
+
+
+
+
+
+
+
+
+
+
+
