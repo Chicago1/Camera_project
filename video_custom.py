@@ -2,7 +2,7 @@
 #assume the script runs when the computer is turned on
 #1. Add a loop that waits for the hard disk to be mounted when the Pi is turned on
 #2. Install Shutil on Pi - use this package to monitor disk space and not overfill the filesystem on the hard drive
-#3. Add a while True loop that
+#3. Compress the day's files and upload them to Google Drive compressed, while storing last uncompressed files on hard drive
 
 
 import numpy as np
@@ -19,10 +19,13 @@ record_sec = 5
 
 #loops to infinity
 while(True):
+
+
+
     # launch video capture software
     cap = cv2.VideoCapture(0)
-    cap.set(3, 1920)
-    cap.set(4, 1080)
+    cap.set(3, 640)
+    cap.set(4, 480)
     # sets the right codec
     fourcc = cv2.VideoWriter_fourcc(*'MP4V')
 
@@ -31,7 +34,7 @@ while(True):
     now = datetime.now()
     # dd/mm/YY H:M:S
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    out = cv2.VideoWriter("/home/pi/mnt/gdrive"+dt_string+".mp4", fourcc, 20.0, (1920, 1080))
+    out = cv2.VideoWriter("/home/pi/mnt/gdrive"+dt_string+".mp4", fourcc, 20.0, (640, 480))
 
 
 
@@ -46,6 +49,8 @@ while(True):
     cap.release()
     out.release()
     cv2.destroyAllWindows()
+
+    time.sleep(1)
 
 
 
